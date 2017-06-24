@@ -14,10 +14,10 @@ def generate_sample_solutions():
     solvers = ((solver_random, 'random'),
                (solver_greedy, 'greedy'))
     for challenge_number in range(CHALLENGES):
-        cities = read_input('input_{}.csv'.format(challenge_number))
+        cities = read_input('input/{}.csv'.format(challenge_number))
         for solver, solver_name in solvers:
             solution = solver.solve(cities)
-            with open('solution_{}_{}.csv'.format(solver_name, challenge_number), 'w') as f:
+            with open('solution_{}/{}.csv'.format(solver_name, challenge_number), 'w') as f:
                 f.write(format_solution(solution) + '\n')
 
 
