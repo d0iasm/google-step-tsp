@@ -36,7 +36,21 @@ def merge(cities1, cities2):
     assert cities1 is not None, "error cities1 is None"
     assert cities2 is not None, "error cities2 is None"
 
-    return cities1 + cities2
+    d1 = distance(cities1[0], cities2[0])
+    d2 = distance(cities1[0], cities2[-1])
+    d3 = distance(cities1[-1], cities2[0])
+    d4 = distance(cities1[-1], cities2[-1])
+
+    d = min(d1, d2, d3, d4)
+
+    if d1 == d:
+        return list(reversed(cities1)) + cities2
+    elif d2 == d:
+        return cities2 + cities1
+    elif d3 == d:
+        return cities1 + cities2
+    elif d4 == d:
+        return cities1 + list(reversed(cities2))
 
 
 def solve(cities):
