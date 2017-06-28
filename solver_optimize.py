@@ -3,7 +3,7 @@
 import sys
 import math
 
-from common import print_solution, read_input
+from common import print_solution, read_input, read_solution
 
 
 def distance(city1, city2):
@@ -67,7 +67,7 @@ def or_opt(N, path, dist):
     return path, total
 
 
-def solve(cities):
+def solve(cities, solution=None):
     N = len(cities)
 
     dist = [[0] * N for i in range(N)]
@@ -75,7 +75,8 @@ def solve(cities):
         for j in range(N):
             dist[i][j] = dist[j][i] = distance(cities[i], cities[j])
 
-    solution = [i for i in range(N)]
+    if solution is None:
+        solution = [i for i in range(N)]
     while True:
         solution, _ = opt_2(N, solution, dist)
         solution, flag = or_opt(N, solution, dist)
@@ -84,5 +85,9 @@ def solve(cities):
 
 if __name__ == '__main__':
     assert len(sys.argv) > 1
-    solution = solve(read_input(sys.argv[1]))
-    print_solution(solution)
+    if len(sys.argv) == 2:
+        solution = solve(read_input(sys.argv[1]))
+        print_solution(solution)
+    elif len(sys.argv) == 3:
+        solution = solve(read_input(sys.argv[1]), read_solution(sys.argv[2]))
+        print_solution(solution)

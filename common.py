@@ -7,6 +7,14 @@ def read_input(filename):
         return cities
 
 
+def read_solution(filename):
+    with open(filename) as f:
+        solution = []
+        for line in f.readlines()[1:]:
+            solution.append(int(line.strip()))
+        return solution
+
+
 def format_solution(solution):
     return 'index\n' + '\n'.join(map(str, solution))
 
