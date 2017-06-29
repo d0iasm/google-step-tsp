@@ -17,13 +17,13 @@ CHALLENGES = 7
 def generate_sample_solutions():
     # solvers = ((solver_random, 'random'),
             #    (solver_greedy, 'greedy'))
-    solvers = ((solver_divide_and_sort, 'yours'),)
+    solvers = ((solver_optimize, 'yours'),)
     for challenge_number in range(CHALLENGES):
         cities = read_input('input/{}.csv'.format(challenge_number))
-        # other_solution = read_solution('solution_yours/divide_greedy/{}.csv'.format(challenge_number))
+        other_solution = read_solution('solution_yours/divide_and_sort/{}.csv'.format(challenge_number))
         for solver, solver_name in solvers:
-            solution = solver.solve(cities)
-            # solution = solver.solve(cities, other_solution)
+            # solution = solver.solve(cities)
+            solution = solver.solve(cities, other_solution)
             with open('solution_{}/{}.csv'.format(solver_name, challenge_number), 'w') as f:
                 f.write(format_solution(solution) + '\n')
 
