@@ -22,7 +22,7 @@ def is_x_longer(cities):
 def divide(cities):
     N = len(cities)
     divide = [cities]
-    while N > 3:
+    while True:
         cities = max(divide, key=lambda x: len(x))
         max_index = divide.index(cities)
         N = len(cities)
@@ -37,51 +37,44 @@ def divide(cities):
         divide.append(cities[middle:])
         divide.pop(max_index)
 
-    return divide
+    return merge(divide)
 
 
 def merge(divide):
     N = len(divide)
-    middle = int(N/2)
-    # TODO: divideをどこで区切るか!
-    #print(divide)
-    #divide = sorted(divide, key=lambda x: (x[0],x[1]))
-    #print(divide)
-    divide1 = divide[:middle]
-    divide2 = divide[middle:]
-    #print(divide1)
-    #print("---")
-    #print(divide2)
-    #print("===")
-    
-    
-    d1 = distance(cities1[0], cities2[0])
-    d2 = distance(cities1[0], cities2[-1])
-    d3 = distance(cities1[-1], cities2[0])
-    d4 = distance(cities1[-1], cities2[-1])
 
-    d = min(d1, d2, d3, d4)
+    solution = divide[0]
+    for i in range(1, N):
+        d1 = distance(solution[0], divide[i][0])
+        d2 = distance(solution[0], divide[i][-1])
+        d3 = distance(solution[-1], divide[i][0])
+        d4 = distance(solution[-1], divide[i][-1])
 
-    if d1 == d:
-        return list(reversed(cities1)) + cities2
-    elif d2 == d:
-        return cities2 + cities1
-    elif d3 == d:
-        return cities1 + cities2
-    elif d4 == d:
-        return cities1 + list(reversed(cities2))
+        d = min(d1, d2, d3, d4)
+
+        if d1 == d:
+            reverse = divide[i]
+            solution = reverse[::-1] + solution
+        elif d2 == d:
+            solution = divide[i] + solution
+        elif d3 == d:
+            solution = solution + divide[i]
+        elif d4 == d:
+            reverse = divide[i]
+            solution = solution + reverse[::-1]
+
+    return solution
     
 
 def solve(cities):
     N = len(cities)
     index = [i for i in range(N)]
     index_cities = dict(zip(cities, index))
-    divide_cities = divide(cities)
-    sorted_cities = merge(divide_cities)
+    sorted_cities = divide(cities)
 
     solution = []
-    #for city in sorted_cities:
-    #    solution.append(index_cities[city])
+    for city in sorted_cities:
+        solution.append(index_cities[city])
     return solution
 
 
