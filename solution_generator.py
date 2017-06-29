@@ -8,6 +8,7 @@ from common import format_solution, read_input, read_solution
 import solver_greedy
 import solver_random
 import solver_divide_and_conquer
+import solver_divide_greedy
 import solver_optimize
 
 CHALLENGES = 7
@@ -18,7 +19,7 @@ def generate_sample_solutions():
     solvers = ((solver_optimize, 'yours'),)
     for challenge_number in range(CHALLENGES):
         cities = read_input('input/{}.csv'.format(challenge_number))
-        other_solution = read_solution('solution_yours/{}_divide.csv'.format(challenge_number))
+        other_solution = read_solution('solution_yours/divide_greedy/{}.csv'.format(challenge_number))
         for solver, solver_name in solvers:
             # solution = solver.solve(cities)
             solution = solver.solve(cities, other_solution)
