@@ -41,27 +41,31 @@ def divide(cities):
 
 
 def merge(divide):
-    N = len(divide)
+    solution = divide.pop(0)
+    while divide:
+        min_distance = distance(solution[0], divide[0][0])
+        min_index = 0
+        for i in range(len(divide)):
+            d1 = distance(solution[0], divide[i][0])
+            d2 = distance(solution[0], divide[i][-1])
+            d3 = distance(solution[-1], divide[i][0])
+            d4 = distance(solution[-1], divide[i][-1])
 
-    solution = divide[0]
-    for i in range(1, N):
-        d1 = distance(solution[0], divide[i][0])
-        d2 = distance(solution[0], divide[i][-1])
-        d3 = distance(solution[-1], divide[i][0])
-        d4 = distance(solution[-1], divide[i][-1])
+            d = min(d1, d2, d3, d4)
 
-        d = min(d1, d2, d3, d4)
+            if d < min_distance:
+                min_distance = d
+                min_index = i
 
-        if d1 == d:
-            reverse = divide[i]
-            solution = reverse[::-1] + solution
-        elif d2 == d:
-            solution = divide[i] + solution
-        elif d3 == d:
-            solution = solution + divide[i]
-        elif d4 == d:
-            reverse = divide[i]
-            solution = solution + reverse[::-1]
+        new = divide.pop(min_index)        
+        if distance(solution[0], new[0]) == min_distance:
+            solution = new[::-1] + solution
+        elif distance(solution[0], new[-1]) == min_distance:
+            solution = new + solution
+        elif distance(solution[-1], new[0]) == min_distance:
+            solution = solution + new
+        elif distance(solution[-1], new[-1]) == min_distance:
+            solution = solution + new[::-1]
 
     return solution
     
