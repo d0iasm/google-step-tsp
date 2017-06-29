@@ -10,15 +10,34 @@ def distance(city1, city2):
     return math.sqrt((city1[0] - city2[0]) ** 2 + (city1[1] - city2[1]) ** 2)
 
 
-def min_spanning_tree(N, dist):
-    V = [i for i in range(N)]
-    E = []
-    spanning_tree = [0]
+def minimum_spanning_tree(solution, dist):
+    min_cost = [0] * len(solution)
+    used = [0] * len(solution)
 
-    while spanning_tree != V:
-        pass
+    for v in solution:
+        min_cost[v] = float('inf')
+        used[v] = False
+        
+    min_cost[solution[0]] = 0
+    total_cost = 0
+
+    while True:
+        new = -1
+        for v in solution:
+            if used[v] == False and (new == -1 or min_cost[v] < min_cost[new]):
+                new = v
+
+        if new == -1: break
+
+        used[new] = True
+        total_cost += min_cost[new]
+
+        for v in solution:
+            min_cost[v] = min(min_cost[v], dist[v][new])
+
+    return total_cost
+
     
-
 def solve(cities):
     N = len(cities)
 
@@ -27,18 +46,9 @@ def solve(cities):
         for j in range(N):
             dist[i][j] = dist[j][i] = distance(cities[i], cities[j])
 
-    current_city = 0
-    unvisited_cities = set(range(1, N))
-    solution = [current_city]
-
-    def distance_from_current_city(to):
-        return dist[current_city][to]
-
-    while unvisited_cities:
-        next_city = min(unvisited_cities, key=distance_from_current_city)
-        unvisited_cities.remove(next_city)
-        solution.append(next_city)
-        current_city = next_city
+    solution = [i for i in range(N)]
+    minimum_spanning_tree(solution, dist)
+    
     return solution
 
     
