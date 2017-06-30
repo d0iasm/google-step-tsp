@@ -17,20 +17,19 @@ def opt_2(N, path, dist):
         for i in range(N - 2):
             i1 = i + 1
             for j in range(i + 2, N):
-                if j == N - 1:
-                    j1 = 0
-                else:
-                    j1 = j + 1
-                if i != 0 or j1 != 0:
-                    assert i != i1 != j != j1, "Error: Overlapping vertices."
-                    l1 = dist[path[i]][path[i1]]
-                    l2 = dist[path[j]][path[j1]]
-                    l3 = dist[path[i]][path[j]]
-                    l4 = dist[path[i1]][path[j1]]
-                    if l1 + l2 > l3 + l4:
-                        new_path = path[i1:j+1]
-                        path[i1:j+1] = new_path[::-1]
-                        count += 1
+                j1 = j + 1
+                if j == N - 1: j1 = 0
+                if i == 0 and j1 == 0: continue
+
+                assert i != i1 != j != j1, "Error: Overlapping vertices."
+                l1 = dist[path[i]][path[i1]]
+                l2 = dist[path[j]][path[j1]]
+                l3 = dist[path[i]][path[j]]
+                l4 = dist[path[i1]][path[j1]]
+                if l1 + l2 > l3 + l4:
+                    new_path = path[i1:j+1]
+                    path[i1:j+1] = new_path[::-1]
+                    count += 1
         total += count
         if count == 0: break
     return path, total
@@ -48,21 +47,23 @@ def or_opt(N, path, dist):
             for j in range(N):
                 j1 = j + 1
                 if j1 == N: j1 = 0
-                if j != i and j1 != i:
-                    l1 = dist[path[i0]][path[i]]
-                    l2 = dist[path[i]][path[i1]]
-                    l3 = dist[path[j]][path[j1]]
-                    l4 = dist[path[i0]][path[i1]]
-                    l5 = dist[path[j]][path[i]]
-                    l6 = dist[path[i]][path[j1]]
-                    if l1 + l2 + l3 > l4 + l5 + l6:
-                        p = path[i]
-                        path[i:i + 1] = []
-                        if i < j:
-                            path[j:j] = [p]
-                        else:
-                            path[j1:j1] = [p]
-                        count += 1
+                if j == i or j1 == i: continue
+
+                assert i0 != i != j != j1, "Error: Overlapping vertices."
+                l1 = dist[path[i0]][path[i]]
+                l2 = dist[path[i]][path[i1]]
+                l3 = dist[path[j]][path[j1]]
+                l4 = dist[path[i0]][path[i1]]
+                l5 = dist[path[j]][path[i]]
+                l6 = dist[path[i]][path[j1]]
+                if l1 + l2 + l3 > l4 + l5 + l6:
+                    p = path[i]
+                    path[i:i + 1] = []
+                    if i < j:
+                        path[j:j] = [p]
+                    else:
+                        path[j1:j1] = [p]
+                    count += 1
         total += 0
         if count == 0: break
     return path, total
@@ -79,7 +80,9 @@ def solve(cities, solution=None):
     if solution is None:
         solution = [i for i in range(N)]
     while True:
-        solution, _ = opt_2(N, solution, dist)
+        solution, flag = opt_2(N, solution, dist)
+        if flag == 0: return solution
+
         solution, flag = or_opt(N, solution, dist)
         if flag == 0: return solution
 
