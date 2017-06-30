@@ -22,6 +22,7 @@ def opt_2(N, path, dist):
                 else:
                     j1 = j + 1
                 if i != 0 or j1 != 0:
+                    assert i != i1 != j != j1, "Error: Overlapping vertices."
                     l1 = dist[path[i]][path[i1]]
                     l2 = dist[path[j]][path[j1]]
                     l3 = dist[path[i]][path[j]]
