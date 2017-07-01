@@ -4,7 +4,7 @@ import math
 
 from common import read_input
 
-CHALLENGES = 7
+CHALLENGES = 8
 
 
 def distance(city1, city2):
@@ -18,6 +18,8 @@ def verify_solutions():
         cities = read_input('input/{}.csv'.format(challenge_number))
         N = len(cities)
         for solution_name in solutions:
+            if challenge_number == 7 and solution_name != 'yours': continue
+
             solution_file = 'solution_{}/{}.csv'.format(solution_name,
                                                         challenge_number)
             with open(solution_file) as f:
